@@ -1,11 +1,405 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Test</title>
+  <meta charset="utf-8" />
+  <title>IMAGINE ORAL EXAM — Escape the Upside Down</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#150005;
+      --bg2:#050005;
+      --neon:#ff2a2a;
+      --neon-soft:#ffdede;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      background:radial-gradient(circle,var(--bg1),var(--bg2) 70%);
+      color:var(--neon-soft);
+      font-family:'Press Start 2P',monospace;
+      padding:20px;
+    }
+    .wrap{max-width:980px;margin:0 auto;}
+    header{text-align:center;margin-bottom:20px;}
+    header h1{
+      color:var(--neon);
+      letter-spacing:4px;
+      text-shadow:0 0 12px var(--neon),0 0 30px #7a0000;
+      margin-bottom:8px;
+    }
+    header p{
+      font-family:Arial,sans-serif;
+      font-size:14px;
+    }
+    .routes{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:20px;
+    }
+    .route-btn{
+      background:transparent;
+      border:2px solid var(--neon);
+      color:var(--neon-soft);
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:11px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.7);
+    }
+    .route-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 26px rgba(255,42,42,0.3);
+    }
+    .panel{
+      display:none;
+      background:linear-gradient(180deg,rgba(30,0,0,0.9),#040004);
+      padding:18px;
+      border-radius:12px;
+      border:1px solid rgba(255,40,40,0.25);
+      box-shadow:0 20px 40px rgba(0,0,0,0.8);
+    }
+    .panel.active{display:block;animation:fade .35s ease}
+    .panel h2{margin-bottom:8px;}
+    .scenario{
+      font-family:Arial,sans-serif;
+      font-size:14px;
+      margin-bottom:10px;
+      color:#ffe5e5;
+    }
+    .step{
+      display:none;
+      margin-top:14px;
+      border-left:4px solid rgba(255,40,40,0.85);
+      padding-left:12px;
+      padding-top:6px;
+      padding-bottom:10px;
+      background:rgba(255,255,255,0.02);
+      border-radius:8px;
+    }
+    .step.active{display:block;}
+    .q{
+      font-family:Arial,sans-serif;
+      font-size:15px;
+      margin-bottom:8px;
+    }
+    .images{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:10px 0;
+    }
+    .images img{
+      width:calc(33% - 8px);
+      min-width:120px;
+      border-radius:8px;
+      border:2px solid rgba(255,255,255,0.08);
+      object-fit:cover;
+      background:#000;
+    }
+    .next,.finish{
+      background:var(--neon);
+      color:#000;
+      border:none;
+      border-radius:8px;
+      padding:8px 12px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:11px;
+      margin-top:6px;
+    }
+    .final{
+      display:none;
+      text-align:center;
+      margin-top:18px;
+      padding:20px;
+      background:linear-gradient(180deg,#260000,#050005);
+      border-radius:12px;
+      border:1px solid rgba(255,40,40,0.25);
+    }
+    .final.active{display:block;}
+    .final h2{
+      color:var(--neon);
+      margin-bottom:10px;
+      text-shadow:0 0 12px var(--neon);
+    }
+    .final p{
+      font-family:Arial,sans-serif;
+      margin-bottom:12px;
+    }
+    .final .routes{margin-top:8px;}
+    footer{
+      margin-top:16px;
+      text-align:center;
+      font-size:11px;
+      font-family:Arial,sans-serif;
+      color:#c9b4b4;
+    }
+    @keyframes fade{
+      from{opacity:0;transform:translateY(6px);}
+      to{opacity:1;transform:none;}
+    }
+    @media(max-width:720px){
+      .images img{width:100%;}
+      .q{font-size:14px;}
+      .route-btn{font-size:10px;padding:8px 10px;}
+    }
+  </style>
 </head>
-<body style="background:black;color:red;text-align:center">
-  <h1>IMAGINE ORAL EXAM</h1>
-  <p>If you see this, GitHub Pages works.</p>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>IMAGINE ORAL EXAM</h1>
+      <p>Stranger Things themed escape room. Answer aloud to escape the Upside Down.</p>
+    </header>
+
+    <!-- ROUTE BUTTONS -->
+    <div class="routes">
+      <button class="route-btn" data-route="A">Hawkins Lab</button>
+      <button class="route-btn" data-route="B">The Arcade</button>
+      <button class="route-btn" data-route="C">Byers' House</button>
+    </div>
+
+    <!-- ROUTE A -->
+    <section id="route-A" class="panel" aria-label="Route A - Hawkins Lab">
+      <h2>Hawkins Lab</h2>
+      <p class="scenario">The alarms are ringing. Explain your plans clearly to unlock each door.</p>
+
+      <div class="step" data-step="0">
+        <p class="q">1. What are your plans for the future?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="1">
+        <p class="q">2. Are you going to study at university after school? anything in mind?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="2">
+        <p class="q">3. Is it better to stay at home while you are in college or to live independently? Why?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="3">
+        <p class="q">4. Recognize and put in order according to your plans the following images.</p>
+        <div class="images">
+          <!-- reemplazá estos archivos por tus imágenes reales -->
+          <img src="images/q4_1.jpg" alt="plan image 1">
+          <img src="images/q4_2.jpg" alt="plan image 2">
+          <img src="images/q4_3.jpg" alt="plan image 3">
+        </div>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="4">
+        <p class="q">5. Which are your 3 least favorite chores at home? why?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="5">
+        <p class="q">6. Would you consider getting a part time job when you get to college ?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="6">
+        <p class="q">7. Which are the differences between make and do?Could you give me some examples?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="7">
+        <p class="q">10. What does “take a break” mean?</p>
+        <div class="images">
+          <img src="images/q10_1.jpg" alt="take a break image">
+        </div>
+        <button class="next">I answered correctly</button>
+      </div>
+    </section>
+
+    <!-- ROUTE B -->
+    <section id="route-B" class="panel" aria-label="Route B - The Arcade">
+      <h2>The Arcade</h2>
+      <p class="scenario">The arcade machines come to life. Each clear answer gives you another coin.</p>
+
+      <div class="step" data-step="0">
+        <p class="q">8. Where did you meet your best friend?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="1">
+        <p class="q">9. Which are your favorite things to do with a friend?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="2">
+        <p class="q">11. What makes a good TV show,in your opinion?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="3">
+        <p class="q">12. Do you have a favorite movie? which one?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="4">
+        <p class="q">13. Could you make a top 5 of your favorite movie genres ?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="5">
+        <p class="q">14. Do you exercise? How many times per week?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="6">
+        <p class="q">15. Which are the 3 pieces of advice that you would give someone that wants a healthier life ?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="7">
+        <p class="q">16. Which are the following injuries?</p>
+        <div class="images">
+          <img src="images/q16_1.jpg" alt="injury 1">
+          <img src="images/q16_2.jpg" alt="injury 2">
+          <img src="images/q16_3.jpg" alt="injury 3">
+        </div>
+        <button class="next">I answered correctly</button>
+      </div>
+    </section>
+
+    <!-- ROUTE C -->
+    <section id="route-C" class="panel" aria-label="Route C - Byers' House">
+      <h2>Byers' House</h2>
+      <p class="scenario">The Christmas lights blink with hidden questions. Decode them to escape.</p>
+
+      <div class="step" data-step="0">
+        <p class="q">17. What can people do to protect the environment?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="1">
+        <p class="q">18. Will you recycle more in the future?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="2">
+        <p class="q">19. mention 3 things related to renewable energies</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="3">
+        <p class="q">20. Do you consider art important?why?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="4">
+        <p class="q">21. Which kind of art is this one?</p>
+        <div class="images">
+          <img src="images/q21_1.jpg" alt="art example 1">
+          <img src="images/q21_2.jpg" alt="art example 2">
+          <img src="images/q21_3.jpg" alt="art example 3">
+        </div>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="5">
+        <p class="q">22. Do you have a favorite artist? What do they do?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="6">
+        <p class="q">23. where did you go in your last vacations?</p>
+        <button class="next">I answered correctly</button>
+      </div>
+
+      <div class="step" data-step="7">
+        <p class="q">24. if you could travel anywhere, what type of vacation would you choose?</p>
+        <button class="finish">I answered correctly — Escape</button>
+      </div>
+    </section>
+
+    <!-- FINAL -->
+    <section id="final" class="final" aria-label="Final screen">
+      <h2>You escaped the Upside Down!</h2>
+      <p>Great job. Choose another route to play again or finish the exam.</p>
+      <div class="routes">
+        <button class="route-btn" data-route="A">Hawkins Lab</button>
+        <button class="route-btn" data-route="B">The Arcade</button>
+        <button class="route-btn" data-route="C">Byers' House</button>
+      </div>
+    </section>
+
+    <footer>
+      Questions taken exactly from the oral exam list. Teacher: listen and validate oral answers before students press the button.
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const panels = {
+        A: document.getElementById('route-A'),
+        B: document.getElementById('route-B'),
+        C: document.getElementById('route-C'),
+      };
+      const finalPanel = document.getElementById('final');
+
+      function hideAllPanels() {
+        Object.values(panels).forEach(p => p.classList.remove('active'));
+        finalPanel.classList.remove('active');
+      }
+
+      function resetSteps(panel) {
+        const steps = [...panel.querySelectorAll('.step')];
+        steps.forEach((s, i) => s.classList.toggle('active', i === 0));
+      }
+
+      function showRoute(routeKey) {
+        hideAllPanels();
+        const panel = panels[routeKey];
+        if (!panel) return;
+        resetSteps(panel);
+        panel.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function showFinal() {
+        hideAllPanels();
+        finalPanel.classList.add('active');
+        finalPanel.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // route buttons
+      document.querySelectorAll('.route-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const r = btn.dataset.route;
+          if (r) showRoute(r);
+        });
+      });
+
+      // steps logic per panel
+      Object.values(panels).forEach(panel => {
+        const steps = [...panel.querySelectorAll('.step')];
+
+        panel.querySelectorAll('.next').forEach((btn, index) => {
+          btn.addEventListener('click', () => {
+            steps[index].classList.remove('active');
+            if (steps[index + 1]) {
+              steps[index + 1].classList.add('active');
+            } else {
+              showFinal();
+            }
+          });
+        });
+
+        panel.querySelectorAll('.finish').forEach(btn => {
+          btn.addEventListener('click', showFinal);
+        });
+      });
+
+      // default route
+      showRoute('A');
+    });
+  </script>
 </body>
 </html>
 
