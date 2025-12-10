@@ -7,83 +7,135 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg1:#150005;
-      --bg2:#050005;
+      --bg1:#0a0004;
+      --bg2:#000000;
       --neon:#ff2a2a;
       --neon-soft:#ffdede;
+      --card:#1b0006;
     }
-    {box-sizing:border-box;margin:0;padding:0}
+    *{box-sizing:border-box;margin:0;padding:0}
     body{
-      background:radial-gradient(circle,var(--bg1),var(--bg2) 70%);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 50% -20%,rgba(255,0,0,0.35),transparent 55%),
+        radial-gradient(circle at 10% 110%,rgba(255,0,0,0.18),transparent 60%),
+        radial-gradient(circle at 90% 110%,rgba(255,0,0,0.18),transparent 60%),
+        linear-gradient(180deg,var(--bg1),var(--bg2));
       color:var(--neon-soft);
       font-family:'Press Start 2P',monospace;
-      padding:20px;
+      padding:18px;
     }
     .wrap{max-width:980px;margin:0 auto;}
-    header{text-align:center;margin-bottom:20px;}
+
+    header{
+      text-align:center;
+      margin-bottom:18px;
+    }
     header h1{
       color:var(--neon);
       letter-spacing:4px;
       text-shadow:0 0 12px var(--neon),0 0 30px #7a0000;
-      margin-bottom:8px;
+      margin-bottom:6px;
+      font-size:22px;
     }
     header p{
       font-family:Arial,sans-serif;
       font-size:14px;
+      color:#ffe5e5;
     }
+
     .routes{
       display:flex;
+      flex-wrap:wrap;
       gap:10px;
       justify-content:center;
-      flex-wrap:wrap;
-      margin-bottom:20px;
+      margin:20px 0;
     }
     .route-btn{
-      background:transparent;
+      background:rgba(0,0,0,0.6);
       border:2px solid var(--neon);
       color:var(--neon-soft);
-      padding:10px 14px;
-      border-radius:10px;
+      padding:10px 16px;
+      border-radius:999px;
       cursor:pointer;
       font-size:11px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.7);
+      box-shadow:0 6px 18px rgba(0,0,0,0.8);
+      transition:.2s transform,.2s box-shadow,.2s background;
     }
     .route-btn:hover{
       transform:translateY(-2px);
-      box-shadow:0 10px 26px rgba(255,42,42,0.3);
+      box-shadow:0 10px 30px rgba(255,42,42,0.4);
+      background:rgba(0,0,0,0.85);
     }
+
     .panel{
       display:none;
-      background:linear-gradient(180deg,rgba(30,0,0,0.9),#040004);
-      padding:18px;
-      border-radius:12px;
-      border:1px solid rgba(255,40,40,0.25);
-      box-shadow:0 20px 40px rgba(0,0,0,0.8);
+      position:relative;
+      padding:20px;
+      margin-bottom:18px;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,40,40,0.4);
+      box-shadow:
+        0 0 30px rgba(0,0,0,0.9),
+        0 0 45px rgba(255,0,0,0.25);
+      background:
+        radial-gradient(circle at 0 0,rgba(255,0,0,0.16),transparent 55%),
+        radial-gradient(circle at 100% 100%,rgba(255,255,255,0.03),transparent 60%),
+        linear-gradient(145deg,#260009,#050006);
     }
-    .panel.active{display:block;animation:fade .35s ease}
-    .panel h2{margin-bottom:8px;}
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:10%;
+      border-radius:50%;
+      border:1px solid rgba(255,40,40,0.25);
+      box-shadow:0 0 50px rgba(255,0,0,0.4);
+      opacity:0.3;
+      pointer-events:none;
+    }
+    .panel h2{
+      margin-bottom:6px;
+      font-size:16px;
+    }
     .scenario{
       font-family:Arial,sans-serif;
       font-size:14px;
       margin-bottom:10px;
       color:#ffe5e5;
     }
+
     .step{
       display:none;
       margin-top:14px;
-      border-left:4px solid rgba(255,40,40,0.85);
-      padding-left:12px;
-      padding-top:6px;
-      padding-bottom:10px;
-      background:rgba(255,255,255,0.02);
-      border-radius:8px;
+      border-radius:10px;
+      background:rgba(5,0,0,0.7);
+      border-left:4px solid rgba(255,40,40,0.9);
+      padding:10px 12px 12px;
     }
     .step.active{display:block;}
+
+    .badge{
+      display:inline-block;
+      font-size:10px;
+      background:rgba(0,0,0,0.6);
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      margin-bottom:6px;
+    }
+    .situation{
+      font-family:Arial,sans-serif;
+      font-size:13px;
+      color:#ffcccc;
+      margin-bottom:6px;
+    }
     .q{
       font-family:Arial,sans-serif;
       font-size:15px;
       margin-bottom:8px;
     }
+
     .images{
       display:flex;
       flex-wrap:wrap;
@@ -97,7 +149,9 @@
       border:2px solid rgba(255,255,255,0.08);
       object-fit:cover;
       background:#000;
+      box-shadow:0 8px 20px rgba(0,0,0,0.9);
     }
+
     .next,.finish{
       background:var(--neon);
       color:#000;
@@ -107,43 +161,51 @@
       cursor:pointer;
       font-weight:700;
       font-size:11px;
-      margin-top:6px;
+      margin-top:4px;
+      box-shadow:0 6px 16px rgba(255,0,0,0.45);
     }
+
     .final{
       display:none;
       text-align:center;
-      margin-top:18px;
-      padding:20px;
-      background:linear-gradient(180deg,#260000,#050005);
-      border-radius:12px;
-      border:1px solid rgba(255,40,40,0.25);
+      margin-top:10px;
+      padding:22px;
+      border-radius:14px;
+      background:
+        radial-gradient(circle at 50% 0,rgba(255,0,0,0.35),transparent 55%),
+        linear-gradient(180deg,#260000,#050005);
+      border:1px solid rgba(255,40,40,0.4);
+      box-shadow:0 20px 50px rgba(0,0,0,0.85);
     }
     .final.active{display:block;}
     .final h2{
       color:var(--neon);
       margin-bottom:10px;
-      text-shadow:0 0 12px var(--neon);
+      text-shadow:0 0 14px var(--neon);
     }
     .final p{
       font-family:Arial,sans-serif;
       margin-bottom:12px;
     }
-    .final .routes{margin-top:8px;}
     footer{
-      margin-top:16px;
+      margin-top:12px;
       text-align:center;
-      font-size:11px;
       font-family:Arial,sans-serif;
+      font-size:11px;
       color:#c9b4b4;
     }
+
     @keyframes fade{
-      from{opacity:0;transform:translateY(6px);}
+      from{opacity:0;transform:translateY(8px);}
       to{opacity:1;transform:none;}
     }
+    .panel.active{animation:fade .4s ease;}
+
     @media(max-width:720px){
-      .images img{width:100%;}
-      .q{font-size:14px;}
       .route-btn{font-size:10px;padding:8px 10px;}
+      .q{font-size:14px;}
+      .images img{width:100%;}
+      header h1{font-size:18px;}
     }
   </style>
 </head>
@@ -151,7 +213,7 @@
   <div class="wrap">
     <header>
       <h1>IMAGINE ORAL EXAM</h1>
-      <p>Stranger Things themed escape room. Answer aloud to escape the Upside Down.</p>
+      <p>Stranger Things escape room. Answer aloud to escape the Upside Down.</p>
     </header>
 
     <!-- ROUTE BUTTONS -->
@@ -164,27 +226,34 @@
     <!-- ROUTE A -->
     <section id="route-A" class="panel" aria-label="Route A - Hawkins Lab">
       <h2>Hawkins Lab</h2>
-      <p class="scenario">The alarms are ringing. Explain your plans clearly to unlock each door.</p>
+      <p class="scenario">You wake up in Hawkins Lab. Red lights flash and doors lock behind you. Only clear answers unlock the next door.</p>
 
       <div class="step" data-step="0">
+        <div class="badge">Question 1 / 8</div>
+        <p class="situation">Dr. Brenner asks you about your future. If your answer is not clear enough, you stay for more experiments.</p>
         <p class="q">1. What are your plans for the future?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="1">
+        <div class="badge">Question 2 / 8</div>
+        <p class="situation">The elevator stops between floors. A voice asks about your studies to restart it.</p>
         <p class="q">2. Are you going to study at university after school? anything in mind?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="2">
+        <div class="badge">Question 3 / 8</div>
+        <p class="situation">You find two doors: one leads home, the other to a dorm. You must explain which life you prefer.</p>
         <p class="q">3. Is it better to stay at home while you are in college or to live independently? Why?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="3">
+        <div class="badge">Question 4 / 8</div>
+        <p class="situation">On the wall there are photos from your future. Put them in order before the Demogorgon arrives.</p>
         <p class="q">4. Recognize and put in order according to your plans the following images.</p>
         <div class="images">
-          <!-- reemplazá estos archivos por tus imágenes reales -->
           <img src="images/q4_1.jpg" alt="plan image 1">
           <img src="images/q4_2.jpg" alt="plan image 2">
           <img src="images/q4_3.jpg" alt="plan image 3">
@@ -193,21 +262,29 @@
       </div>
 
       <div class="step" data-step="4">
+        <div class="badge">Question 5 / 8</div>
+        <p class="situation">A cleaning cart blocks the corridor. The staff will move it only if you talk about chores.</p>
         <p class="q">5. Which are your 3 least favorite chores at home? why?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="5">
+        <div class="badge">Question 6 / 8</div>
+        <p class="situation">You see a poster for a job on the lab notice board. They ask your opinion about part-time jobs.</p>
         <p class="q">6. Would you consider getting a part time job when you get to college ?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="6">
+        <div class="badge">Question 7 / 8</div>
+        <p class="situation">Keycards appear with the verbs MAKE and DO. You must explain the difference to choose the right one.</p>
         <p class="q">7. Which are the differences between make and do?Could you give me some examples?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="7">
+        <div class="badge">Question 8 / 8</div>
+        <p class="situation">Before the last door opens, a screen shows a student resting in the Upside Down.</p>
         <p class="q">10. What does “take a break” mean?</p>
         <div class="images">
           <img src="images/q10_1.jpg" alt="take a break image">
@@ -219,44 +296,60 @@
     <!-- ROUTE B -->
     <section id="route-B" class="panel" aria-label="Route B - The Arcade">
       <h2>The Arcade</h2>
-      <p class="scenario">The arcade machines come to life. Each clear answer gives you another coin.</p>
+      <p class="scenario">You enter an empty arcade. Every machine is connected to the Upside Down. Your answers give you tokens to continue.</p>
 
       <div class="step" data-step="0">
+        <div class="badge">Question 1 / 8</div>
+        <p class="situation">A machine called “FRIENDSHIP QUEST” turns on and shows you a memory.</p>
         <p class="q">8. Where did you meet your best friend?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="1">
+        <div class="badge">Question 2 / 8</div>
+        <p class="situation">The game asks how you level up your friendship in real life.</p>
         <p class="q">9. Which are your favorite things to do with a friend?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="2">
+        <div class="badge">Question 3 / 8</div>
+        <p class="situation">A TV screen appears with static. You must explain what makes a great show.</p>
         <p class="q">11. What makes a good TV show,in your opinion?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="3">
+        <div class="badge">Question 4 / 8</div>
+        <p class="situation">Posters of famous movies appear on the walls around you.</p>
         <p class="q">12. Do you have a favorite movie? which one?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="4">
+        <div class="badge">Question 5 / 8</div>
+        <p class="situation">The arcade asks you to design a “Top 5 movie genres” game for your friends.</p>
         <p class="q">13. Could you make a top 5 of your favorite movie genres ?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="5">
+        <div class="badge">Question 6 / 8</div>
+        <p class="situation">An exercise bike in the corner starts glowing. It wants to know about your routine.</p>
         <p class="q">14. Do you exercise? How many times per week?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="6">
+        <div class="badge">Question 7 / 8</div>
+        <p class="situation">A health arcade game asks you to give advice to its virtual players.</p>
         <p class="q">15. Which are the 3 pieces of advice that you would give someone that wants a healthier life ?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="7">
+        <div class="badge">Question 8 / 8</div>
+        <p class="situation">The last machine shows four injured characters from Hawkins.</p>
         <p class="q">16. Which are the following injuries?</p>
         <div class="images">
           <img src="images/q16_1.jpg" alt="injury 1">
@@ -270,29 +363,39 @@
     <!-- ROUTE C -->
     <section id="route-C" class="panel" aria-label="Route C - Byers' House">
       <h2>Byers' House</h2>
-      <p class="scenario">The Christmas lights blink with hidden questions. Decode them to escape.</p>
+      <p class="scenario">You arrive at the Byers’ house. The Christmas lights start blinking with secret questions from the Upside Down.</p>
 
       <div class="step" data-step="0">
+        <div class="badge">Question 1 / 8</div>
+        <p class="situation">The lights show images of forests, oceans and cities.</p>
         <p class="q">17. What can people do to protect the environment?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="1">
+        <div class="badge">Question 2 / 8</div>
+        <p class="situation">A recycling bin appears next to the sofa and asks about your habits.</p>
         <p class="q">18. Will you recycle more in the future?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="2">
+        <div class="badge">Question 3 / 8</div>
+        <p class="situation">Different energy sources flash in the Christmas lights.</p>
         <p class="q">19. mention 3 things related to renewable energies</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="3">
+        <div class="badge">Question 4 / 8</div>
+        <p class="situation">Joyce shows you paintings and posters around the house.</p>
         <p class="q">20. Do you consider art important?why?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="4">
+        <div class="badge">Question 5 / 8</div>
+        <p class="situation">Three strange paintings appear on the wall through the Upside Down.</p>
         <p class="q">21. Which kind of art is this one?</p>
         <div class="images">
           <img src="images/q21_1.jpg" alt="art example 1">
@@ -303,16 +406,22 @@
       </div>
 
       <div class="step" data-step="5">
+        <div class="badge">Question 6 / 8</div>
+        <p class="situation">A radio starts playing music from one of your favorite artists.</p>
         <p class="q">22. Do you have a favorite artist? What do they do?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="6">
+        <div class="badge">Question 7 / 8</div>
+        <p class="situation">A map of the world appears on the table.</p>
         <p class="q">23. where did you go in your last vacations?</p>
         <button class="next">I answered correctly</button>
       </div>
 
       <div class="step" data-step="7">
+        <div class="badge">Question 8 / 8</div>
+        <p class="situation">The last set of lights shows portals to different destinations.</p>
         <p class="q">24. if you could travel anywhere, what type of vacation would you choose?</p>
         <button class="finish">I answered correctly — Escape</button>
       </div>
@@ -321,7 +430,7 @@
     <!-- FINAL -->
     <section id="final" class="final" aria-label="Final screen">
       <h2>You escaped the Upside Down!</h2>
-      <p>Great job. Choose another route to play again or finish the exam.</p>
+      <p>Great job. Choose another route to play again or end the exam.</p>
       <div class="routes">
         <button class="route-btn" data-route="A">Hawkins Lab</button>
         <button class="route-btn" data-route="B">The Arcade</button>
@@ -330,7 +439,7 @@
     </section>
 
     <footer>
-      Questions taken exactly from the oral exam list. Teacher: listen and validate oral answers before students press the button.
+      Questions taken from the oral exam list. Teacher: listen and validate answers before students press the button.
     </footer>
   </div>
 
@@ -343,62 +452,55 @@
       };
       const finalPanel = document.getElementById('final');
 
-      function hideAllPanels() {
+      function hideAll() {
         Object.values(panels).forEach(p => p.classList.remove('active'));
         finalPanel.classList.remove('active');
       }
 
-      function resetSteps(panel) {
+      function resetSteps(panel){
         const steps = [...panel.querySelectorAll('.step')];
-        steps.forEach((s, i) => s.classList.toggle('active', i === 0));
+        steps.forEach((s,i)=> s.classList.toggle('active',i===0));
       }
 
-      function showRoute(routeKey) {
-        hideAllPanels();
-        const panel = panels[routeKey];
-        if (!panel) return;
-        resetSteps(panel);
-        panel.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      function showRoute(key){
+        hideAll();
+        const p = panels[key];
+        if(!p) return;
+        resetSteps(p);
+        p.classList.add('active');
+        window.scrollTo({top:0,behavior:'smooth'});
       }
 
-      function showFinal() {
-        hideAllPanels();
+      function showFinal(){
+        hideAll();
         finalPanel.classList.add('active');
-        finalPanel.scrollIntoView({ behavior: 'smooth' });
+        finalPanel.scrollIntoView({behavior:'smooth'});
       }
 
-      // route buttons
-      document.querySelectorAll('.route-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
+      document.querySelectorAll('.route-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>{
           const r = btn.dataset.route;
-          if (r) showRoute(r);
+          if(r) showRoute(r);
         });
       });
 
-      // steps logic per panel
-      Object.values(panels).forEach(panel => {
+      Object.values(panels).forEach(panel=>{
         const steps = [...panel.querySelectorAll('.step')];
-
-        panel.querySelectorAll('.next').forEach((btn, index) => {
-          btn.addEventListener('click', () => {
-            steps[index].classList.remove('active');
-            if (steps[index + 1]) {
-              steps[index + 1].classList.add('active');
-            } else {
-              showFinal();
-            }
+        panel.querySelectorAll('.next').forEach((btn,idx)=>{
+          btn.addEventListener('click',()=>{
+            steps[idx].classList.remove('active');
+            if(steps[idx+1]) steps[idx+1].classList.add('active');
+            else showFinal();
           });
         });
-
-        panel.querySelectorAll('.finish').forEach(btn => {
-          btn.addEventListener('click', showFinal);
+        panel.querySelectorAll('.finish').forEach(btn=>{
+          btn.addEventListener('click',showFinal);
         });
       });
 
-      // default route
-      showRoute('A');
+      showRoute('A'); // ruta inicial
     });
   </script>
 </body>
 </html>
+
