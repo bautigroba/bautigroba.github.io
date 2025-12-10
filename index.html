@@ -440,64 +440,98 @@
     </footer>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const panels = {
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var panels = {
         A: document.getElementById('route-A'),
         B: document.getElementById('route-B'),
-        C: document.getElementById('route-C'),
+        C: document.getElementById('route-C')
       };
-      const finalPanel = document.getElementById('final');
+      var finalPanel = document.getElementById('final');
 
       function hideAll() {
-        Object.values(panels).forEach(p => p.classList.remove('active'));
+        for (var key in panels) {
+          if (panels.hasOwnProperty(key)) {
+            panels[key].classList.remove('active');
+          }
+        }
         finalPanel.classList.remove('active');
       }
 
-      function resetSteps(panel){
-        const steps = [...panel.querySelectorAll('.step')];
-        steps.forEach((s,i)=> s.classList.toggle('active',i===0));
+      function resetSteps(panel) {
+        var steps = panel.querySelectorAll('.step');
+        for (var i = 0; i < steps.length; i++) {
+          if (i === 0) {
+            steps[i].classList.add('active');
+          } else {
+            steps[i].classList.remove('active');
+          }
+        }
       }
 
-      function showRoute(key){
+      function showRoute(key) {
         hideAll();
-        const p = panels[key];
-        if(!p) return;
-        resetSteps(p);
-        p.classList.add('active');
-        window.scrollTo({top:0,behavior:'smooth'});
+        var panel = panels[key];
+        if (!panel) return;
+        resetSteps(panel);
+        panel.classList.add('active');
+        window.scrollTo(0, 0);
       }
 
-      function showFinal(){
+      function showFinal() {
         hideAll();
         finalPanel.classList.add('active');
-        finalPanel.scrollIntoView({behavior:'smooth'});
+        if (finalPanel.scrollIntoView) {
+          finalPanel.scrollIntoView({ behavior: 'smooth' });
+        }
       }
 
-      document.querySelectorAll('.route-btn').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-          const r = btn.dataset.route;
-          if(r) showRoute(r);
+      // Botones de rutas
+      var routeButtons = document.querySelectorAll('.route-btn');
+      for (var i = 0; i < routeButtons.length; i++) {
+        routeButtons[i].addEventListener('click', function () {
+          var route = this.getAttribute('data-route');
+          if (route) {
+            showRoute(route);
+          }
         });
-      });
+      }
 
-      Object.values(panels).forEach(panel=>{
-        const steps = [...panel.querySelectorAll('.step')];
-        panel.querySelectorAll('.next').forEach((btn,idx)=>{
-          btn.addEventListener('click',()=>{
-            steps[idx].classList.remove('active');
-            if(steps[idx+1]) steps[idx+1].classList.add('active');
-            else showFinal();
-          });
-        });
-        panel.querySelectorAll('.finish').forEach(btn=>{
-          btn.addEventListener('click',showFinal);
-        });
-      });
+      // Lógica de pasos dentro de cada ruta
+      for (var key in panels) {
+        if (panels.hasOwnProperty(key)) {
+          (function (panel) {
+            var steps = panel.querySelectorAll('.step');
 
-      showRoute('A'); // ruta inicial
+            var nextButtons = panel.querySelectorAll('.next');
+            for (var i = 0; i < nextButtons.length; i++) {
+              (function (index) {
+                nextButtons[index].addEventListener('click', function () {
+                  steps[index].classList.remove('active');
+                  if (steps[index + 1]) {
+                    steps[index + 1].classList.add('active');
+                  } else {
+                    showFinal();
+                  }
+                });
+              })(i);
+            }
+
+            var finishButtons = panel.querySelectorAll('.finish');
+            for (var j = 0; j < finishButtons.length; j++) {
+              finishButtons[j].addEventListener('click', showFinal);
+            }
+          })(panels[key]);
+        }
+      }
+
+      // Ruta inicial
+      showRoute('A');
     });
   </script>
+</body>
+</html>
+
 </body>
 </html>
 
